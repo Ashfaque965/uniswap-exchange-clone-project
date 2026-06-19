@@ -1,6 +1,6 @@
 # uniswap-exchange-clone-project
 
-**Here's the clean, ready-to-copy-paste version:**
+
 
 ---
 
@@ -132,4 +132,4 @@ GitHub: [https://github.com/Ashfaque965](https://github.com/Ashfaque965)
 
 ---
 
-Just copy everything from the top to the bottom. It's perfectly formatted for a `README.md` file.
+
