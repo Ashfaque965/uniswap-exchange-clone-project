@@ -1,65 +1,203 @@
-// deployer le site :
-     npm run dev
-npx hardhat run scripts/deploy.js --network localhoste
-cl
-// pour mettre à jour votre dépôt GitHub avec les modifications apportées. Voici les étapes à suivre :
-
-// Vérifiez l'état actuel de votre dépôt :
-        bash: git status
-// Ajoutez tous les fichiers modifiés :
-        bash: git add .
-// Créez un commit avec un message descriptif :
-    bash: git commit -m "Mise à jour des contrats et tests pour les échanges Uniswap"
-
-// Récupérez les dernières modifications du dépôt distant :
-    bash: git pull origin main  # ou le nom de votre branche principale
-// Poussez vos modifications :
-bash: git push origin main  # ou le nom de votre branche
-
-Si vous avez créé une nouvelle branche pour ces modifications, utilisez plutôt :
-
-    bash:
-          git checkout -b nom-de-votre-branche
-          git push -u origin nom-de-votre-branche
-
-- ExactInput : "Je dépense X, donnez-moi au moins Y en retour."
-- ExactOutput : "Je veux exactement Y, et je ne veux pas dépenser plus que X."
 
 
+# Project Commands and Deployment Guide
 
+## Run the Website
 
-///const hre = require("hardhat");
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Deploy the smart contracts to the local Hardhat network:
+
+```bash
+npx hardhat run scripts/deploy.js --network localhost
+```
+
+Clear the terminal:
+
+```bash
+clear
+```
+
+---
+
+# Update Your GitHub Repository
+
+## 1. Check the current status of your repository
+
+```bash
+git status
+```
+
+## 2. Add all modified files
+
+```bash
+git add .
+```
+
+## 3. Create a commit with a descriptive message
+
+```bash
+git commit -m "Updated smart contracts and tests for Uniswap swaps"
+```
+
+## 4. Pull the latest changes from the remote repository
+
+```bash
+git pull origin main
+```
+
+## 5. Push your changes
+
+```bash
+git push origin main
+```
+
+---
+
+# If You Are Using a New Branch
+
+Create and switch to a new branch:
+
+```bash
+git checkout -b your-branch-name
+```
+
+Push the branch and set the upstream:
+
+```bash
+git push -u origin your-branch-name
+```
+
+---
+
+# Uniswap Swap Types
+
+## ExactInput
+
+"I am spending X tokens and want to receive at least Y tokens in return."
+
+* Input amount is fixed.
+* Output amount may vary depending on market conditions.
+
+### Example
+
+```solidity
+swapExactInputSingle(
+    tokenIn,
+    tokenOut,
+    amountIn,
+    amountOutMinimum
+);
+```
+
+---
+
+## ExactOutput
+
+"I want exactly Y tokens and I do not want to spend more than X tokens."
+
+* Output amount is fixed.
+* Maximum input amount is specified.
+
+### Example
+
+```solidity
+swapExactOutputSingle(
+    tokenIn,
+    tokenOut,
+    amountOut,
+    amountInMaximum
+);
+```
+
+---
+
+# Deployment Script (scripts/deploy.js)
+
+```javascript
+const hre = require("hardhat");
 
 async function main() {
-    //ERC20 BOO TOKEN
+
+    // Deploy BOO ERC20 Token
     const BooToken = await hre.ethers.getContractFactory("BooToken");
     const booToken = await BooToken.deploy();
     await booToken.deployed();
-    console.log("booToken deployed to:", booToken.address);
+    console.log("BooToken deployed to:", booToken.address);
 
-        //ERC20 LIFE TOKEN
+    // Deploy LIFE ERC20 Token
     const LifeToken = await hre.ethers.getContractFactory("LifeToken");
     const lifeToken = await LifeToken.deploy();
     await lifeToken.deployed();
-    console.log("lifeToken deployed to:", lifeToken.address);
+    console.log("LifeToken deployed to:", lifeToken.address);
 
-
-    //ERC20 SingleSwapToken
+    // Deploy Single Swap Contract
     const SingleSwapToken = await hre.ethers.getContractFactory("SingleSwapToken");
     const singleSwapToken = await SingleSwapToken.deploy();
     await singleSwapToken.deployed();
-    console.log("singleSwapToken deployed to:", singleSwapToken.address);
+    console.log("SingleSwapToken deployed to:", singleSwapToken.address);
 
-
-    //ERC20 SwapMultiHop
+    // Deploy Multi-Hop Swap Contract
     const SwapMultiHop = await hre.ethers.getContractFactory("SwapMultiHop");
     const swapMultiHop = await SwapMultiHop.deploy();
     await swapMultiHop.deployed();
-    console.log("swapMultiHop deployed to:", swapMultiHop.address);
-
+    console.log("SwapMultiHop deployed to:", swapMultiHop.address);
 }
 
 main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 });
+```
+
+---
+
+# Important Note
+
+Incorrect command:
+
+```bash
+npx hardhat run scripts/deploy.js --network localhoste
+```
+
+Correct command:
+
+```bash
+npx hardhat run scripts/deploy.js --network localhost
+```
+
+---
+
+# Typical Workflow
+
+```bash
+# Start local Hardhat node
+npx hardhat node
+
+# Deploy contracts
+npx hardhat run scripts/deploy.js --network localhost
+
+# Start frontend
+npm run dev
+
+# Check Git status
+git status
+
+# Add changes
+git add .
+
+# Commit changes
+git commit -m "Updated smart contracts and tests for Uniswap swaps"
+
+# Pull latest updates
+git pull origin main
+
+# Push changes
+git push origin main .
+```
+
+
